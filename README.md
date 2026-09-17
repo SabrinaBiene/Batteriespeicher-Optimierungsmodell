@@ -105,12 +105,18 @@ Die Ergebnisse der Batterispeicher Simulation finden sich auf der Seite 2. Batte
 Die Nutzung des Tools benötigt eine lokale Installation von Python: 
 Python (Version 3.10 oder neuer) - Download z.B. über: 
 ```bash
-
+https://www.python.org/downloads/
 ```
+
+```text
+Wichtig:
+Während der Installation die Option "Add Python to PATH" aktivieren.
+```
+
 sowie
 Git - Download z.B. über: 
 ```bash
-
+https://git-scm.com/install/windows
 ```
 Dann muss ein Projektordner erstellt werden und im Ordner durch
 ```text
