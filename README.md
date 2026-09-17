@@ -2,7 +2,7 @@
 
 Dieses Projekt kombiniert ein interaktives **Strommarkt-Dashboard** mit einer **Ex-post-Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers (BESS)** am deutschen Day-Ahead-Strommarkt.
 
-Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse sowie für wissenschaftliche Arbeiten (hier: BA-Thesis) konzipiert.
+Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse für meine BA-Thesis konzipiert.
 
 ---
 
@@ -17,7 +17,6 @@ Analyse zentraler Strommarktindikatoren auf Basis historischer Zeitreihen:
 - Stromerzeugung nach Energieträgern (Strommix)
 - Anteil Erneuerbarer Energien (EE-Anteil)
 - Negative Preisstunden und Preisstatistiken
-- **Diagramm: Strompreis vs. EE-Anteil** 
 
 ---
 
@@ -35,13 +34,12 @@ Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers:
   - State of Charge (SoC)
   - Erlöse, Kosten und Gewinne
   - Kumulierter Gewinn
-- **Sensitivitätsanalyse** des Gesamtergebnisses in Abhängigkeit vom Wirkungsgrad
 
 ---
 
 ## Methodischer Hintergrund
 
-Die Analyse folgt einem **quantitativen, empirischen Ansatz** auf Basis von Marktdaten von 01. Jan. 2020 bis 31. Dez. 2025:
+Die Analyse folgt einem quantitativen, empirischen Ansatz auf Basis von Marktdaten von 01. Jan. 2020 bis 31. Dez. 2025:
 
 - Untersuchung zentraler Marktindikatoren:
   - Preisniveau und Preisvolatilität
@@ -51,7 +49,7 @@ Die Analyse folgt einem **quantitativen, empirischen Ansatz** auf Basis von Mark
 - Bewertung des Erlöspotenzials eines  Großbatteriespeichers
 - Sensitivitätsanalyse 
 
-Regulatorische Aspekte (z. B. Netzentgelte, Marktdesign) werden **nicht modellbasiert**, sondern sind für eine ergänzende qualitative Einordnung vorgesehen.
+Regulatorische Aspekte (z. B. Netzentgelte, Marktdesign) werden nicht modellbasiert, sondern sind für eine ergänzende qualitative Einordnung vorgesehen.
 
 ---
 
@@ -69,3 +67,4 @@ CSV-Datei mit folgenden Spalten:
 
 ```text
 Zeitstempel, Strompreis
+
