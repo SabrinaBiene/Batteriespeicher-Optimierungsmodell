@@ -105,10 +105,12 @@ Die Ergebnisse der Batterispeicher Simulation finden sich auf der Seite 2. Batte
 1. Repository klonen:
 ```bash
 git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.git
-
+```
 2. Abhängigkeiten installieren:
+```bash
 pip install -r requirements.txt
-
+```
 3. Anwendung starten:
+```bash
 streamlit run App.py
 ```
