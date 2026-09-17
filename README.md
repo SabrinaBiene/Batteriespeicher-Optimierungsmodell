@@ -102,15 +102,56 @@ Die Ergebnisse der Batterispeicher Simulation finden sich auf der Seite 2. Batte
 
 ## Installation | Nutzung des Tools
 
+Die Nutzung des Tools benötigt eine lokale Installation von Python: 
+Python (Version 3.10 oder neuer) - Download z.B. über: 
+```bash
+
+```
+sowie
+Git - Download z.B. über: 
+```bash
+
+```
+Dann muss ein Projektordner erstellt werden und im Ordner durch
+```text
+Rechtsklick > Weitere Optionen anzeigen > Open Git Bash Here
+```
+ein Terminal geöffnet und die nachfolgenden Eingaben durchlaufen werden.
+
 1. Repository klonen:
 ```bash
 git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.git
 ```
-2. Abhängigkeiten installieren:
+Dadurch wird das Projekt auf den lokalen Rechner heruntergeladen.
+
+2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
+Windows: 
+```bash
+python -m venv .venv
+```
+```bash
+.venv\Scripts\activate
+```
+Linux / macOS:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+3. Abhängigkeiten installieren:
 ```bash
 pip install -r requirements.txt
 ```
-3. Anwendung starten:
+Hinweis: Für die reine Nutzung der Anwendung sind keine Änderungen am Quellcode erforderlich. Nach der Installation der Abhängigkeiten genügt der Befehl unter 5. um die Anwendung zu starten.
+
+4. Anwendung starten:
 ```bash
 streamlit run App.py
+```
+Im Terminal erscheint dann typischerweise & die Seite öffnet sich automatisch im Browser:
+```text
+LOCAL URL: http://localhost:8501
+```
+Ist das nicht der Fall, kann die Seite manuell im Browser aufgerufen werden: 
+```bash
+http://localhost:8501
 ```
