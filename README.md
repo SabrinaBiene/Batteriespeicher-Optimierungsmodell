@@ -124,13 +124,13 @@ Rechtsklick > Weitere Optionen anzeigen > Open Git Bash Here
 ```
 ein Terminal geöffnet und die nachfolgenden Eingaben durchlaufen werden.
 
-1. Repository klonen:
+# 1. Repository klonen:
 ```bash
 git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.git
 ```
 Dadurch wird das Projekt auf den lokalen Rechner heruntergeladen.
 
-2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
+# 2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
 
 Windows: 
 ```bash
@@ -146,13 +146,13 @@ Linux / macOS:
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-3. Abhängigkeiten installieren:
+# 3. Abhängigkeiten installieren:
 ```bash
 pip install -r requirements.txt
 ```
 Hinweis: Für die reine Nutzung der Anwendung sind keine Änderungen am Quellcode erforderlich. Nach der Installation der Abhängigkeiten genügt der Befehl unter 5. um die Anwendung zu starten.
 
-4. Anwendung starten:
+# 4. Anwendung starten:
 ```bash
 streamlit run App.py
 ```
