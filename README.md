@@ -1,14 +1,12 @@
 # Strommarkt-Dashboard & BESS Day-Ahead Arbitrage (Deutschland)
 ---
-Dieses Projekt kombiniert ein interaktives **Strommarkt-Dashboard** mit einer **Ex-post-Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers (BESS)** am deutschen Day-Ahead-Strommarkt.
-
-Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse für meine BA-Thesis konzipiert.
-
----
 ## Kurzbeschreibung
 
 Dieses Projekt untersucht das Erlöspotenzial eines Großbatteriespeichers am deutschen Day-Ahead-Strommarkt. Neben der Analyse zentraler Strommarktindikatoren ermöglicht die Anwendung die Simulation einer arbitragebasierten Speicherbewirtschaftung auf Basis historischer Marktdaten.
 
+Es kombiniert ein interaktives **Strommarkt-Dashboard** mit einer **Ex-post-Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers (BESS)** am deutschen Day-Ahead-Strommarkt.
+
+Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse für meine BA-Thesis konzipiert.
 ---
 
 ## Inhalte & Funktionen
