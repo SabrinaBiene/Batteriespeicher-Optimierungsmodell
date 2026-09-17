@@ -62,7 +62,7 @@ with tab_results:
             "profit": COLOURS["profit"]
         }
     )
-    st.plotly_chart(fig_year, use_container_width=True)
+    st.plotly_chart(fig_year, use_container_width=True,key="yearly_results")
 
 
     # Kosten vs. Erlöse - Overlay Profit
@@ -92,7 +92,7 @@ with tab_results:
         yaxis2=dict(title="Profit [€]", overlaying="y", side="right", showgrid=False),
     )
 
-    st.plotly_chart(fig_rev_cost, use_container_width=True)
+    st.plotly_chart(fig_rev_cost, use_container_width=True, key="rev_cost")
 
 # Profit pro Zyklus 
     st.markdown("---")
@@ -151,7 +151,7 @@ with tab_results:
         yaxis2=dict(title="Profit [€]", overlaying="y", side="right"),
         legend=dict(orientation="h", y=1.12),
         height=650)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="profit_and_cycles")
 
 # Laden | Entladen und SoC - für einen ausgewählten Monat
     st.markdown("---")
@@ -212,7 +212,7 @@ with tab_results:
         legend=dict(orientation="h", y=1.05)
     )
 
-    st.plotly_chart(fig_soc, use_container_width=True)
+    st.plotly_chart(fig_soc, use_container_width=True, key="soc_and_p_results")
 with tab_betrieb:
 # Betrieb 
     st.subheader("Betriebsstunden (aktiv) im Zeitverlauf")
@@ -286,7 +286,7 @@ with tab_betrieb:
                     showgrid=False),
         legend=dict(orientation="h", y=1.1)
     )
-    st.plotly_chart(fig_hist, use_container_width=True)
+    st.plotly_chart(fig_hist, use_container_width=True, key="daily_charging")
 
     #################################################### overlay Preisspanne (Q90-10 Quantile einfügen)
 # Heatmap Laden | Entladen
@@ -306,7 +306,7 @@ with tab_betrieb:
                 "p_charge": "Ladeleistung [MW]"
             }
         )
-        st.plotly_chart(map_charge, use_container_width=True)
+        st.plotly_chart(map_charge, use_container_width=True, key="heat-charge")
     with col_2:     
         map_discharge = px.density_heatmap(
             df_results,
@@ -322,7 +322,7 @@ with tab_betrieb:
                 "p_discharge": "Entladeleistung [MW]"
             }
         )
-        st.plotly_chart(map_discharge, use_container_width=True)    
+        st.plotly_chart(map_discharge, use_container_width=True, key="heat-discharge")    
 
     # Laden gegen Strompreis
     st.markdown("---")
@@ -346,7 +346,7 @@ with tab_betrieb:
             size=5
         )
     )
-    st.plotly_chart(fig_charge_price, use_container_width=True)
+    st.plotly_chart(fig_charge_price, use_container_width=True, key="charge_and_price")
 
     # Entladen gegen Strompreis
     st.subheader("Entladeleistung gegen Strompreis")
@@ -367,7 +367,7 @@ with tab_betrieb:
             size=5
         )
     )
-    st.plotly_chart(fig_discharge_price, use_container_width=True)
+    st.plotly_chart(fig_discharge_price, use_container_width=True, key="discharge_and_price")
 
 # Laden | Entladen und SoC - für einen ausgewählten Monat
     # Monat mit höchstem Profit
@@ -377,9 +377,9 @@ with tab_betrieb:
         "month"]
 
     df_plot = df_results[df_results["month"] == best_month].copy()
-    fig_soc = go.Figure()
+    fig_soc2 = go.Figure()
     # Entladen positiv
-    fig_soc.add_trace(go.Scatter(
+    fig_soc2.add_trace(go.Scatter(
             x=df_plot["timestamp"],
             y=df_plot["p_discharge"],
             mode="lines",
@@ -388,7 +388,7 @@ with tab_betrieb:
             yaxis="y")  
     )
     # Laden negativ
-    fig_soc.add_trace(go.Scatter(
+    fig_soc2.add_trace(go.Scatter(
             x=df_plot["timestamp"],
             y=-df_plot["p_charge"],
             mode="lines",
@@ -398,7 +398,7 @@ with tab_betrieb:
     )
     # 50 % SoC entspricht 0 MW
     soc_scaled = df_plot["SoC_percent"] - 50
-    fig_soc.add_trace(go.Scatter(
+    fig_soc2.add_trace(go.Scatter(
             x=df_plot["timestamp"],
             y=soc_scaled,
             mode="lines",
@@ -406,7 +406,7 @@ with tab_betrieb:
             line=dict(color=COLOURS["soc"],width=3),
             yaxis="y2")
     )
-    fig_soc.update_layout(
+    fig_soc2.update_layout(
         title=f"Ladezustand und Leistung – profitabelster Monat ({best_month})",
         xaxis_title="Zeit",
         # Leistung
@@ -428,7 +428,7 @@ with tab_betrieb:
         legend=dict(orientation="h", y=1.05)
     )
 
-    st.plotly_chart(fig_soc, use_container_width=True)
+    st.plotly_chart(fig_soc2, use_container_width=True, key="soc_and_p_stat")
 
 # Heatmap SoC
     st.markdown("---")
@@ -446,12 +446,12 @@ with tab_betrieb:
             "SoC": "Ladezustand [%]"
         }
     )
-    st.plotly_chart(map, use_container_width=True)  
+    st.plotly_chart(map, use_container_width=True, key="heat_soc")  
 
 # Ladeverhalten: Overlay
     st.markdown("---")
-    show_price = st.checkbox("Strompreis einblenden")
-    show_ee = st.checkbox("EE-Anteil einblenden")
+    show_price = st.checkbox("Strompreis einblenden", key="show_price")
+    show_ee = st.checkbox("EE-Anteil einblenden",key="show_ee")
 
     # Laden 
     fig = px.bar(
@@ -516,7 +516,7 @@ with tab_betrieb:
             )
         )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="overlay_charge_price")
 
 # Zyklen
     st.markdown("---")
@@ -534,7 +534,7 @@ with tab_betrieb:
         marker_color="rgba(241,153,20,0.65)")
     fig.update_layout(title="Betriebszyklen und Vollzyklen")
 
-    st.plotly_chart(fig, use_container_width = True)
+    st.plotly_chart(fig, use_container_width = True, key="cycles")
 
     df_yearly_metrics = analysis_results["df_yearly_metrics"]
 
@@ -617,7 +617,7 @@ with tab_cost:
         legend_title="Kostenart",
         height=500
     )
-    st.plotly_chart(fig_cost, use_container_width=True)
+    st.plotly_chart(fig_cost, use_container_width=True, key="cost")
 
 
 # Monatl. Profit
@@ -634,7 +634,7 @@ with tab_cost:
     fig_month.update_traces(
         line=dict(color=COLOURS["profit"], width=3)
     )
-    st.plotly_chart(fig_month, use_container_width=True)
+    st.plotly_chart(fig_month, use_container_width=True, key="profit_m")
 
 with tab_dl: 
     st.write("Download")
@@ -649,7 +649,8 @@ with tab_dl:
         label="Ergebnistabelle als CSV herunterladen",
         data=csv_bytes,
         file_name="Battery_Model_Results.csv",
-        mime="text/csv"
+        mime="text/csv",
+        key="download_results"
         )
 # operation
     csv_bytes = df_operation.to_csv(
@@ -662,5 +663,6 @@ with tab_dl:
         label="Ergebnistabelle (aktiv) CSV herunterladen",
         data=csv_bytes,
         file_name="Battery_Model_active.csv",
-        mime="text/csv"
+        mime="text/csv",
+        key="download_active"
     )
