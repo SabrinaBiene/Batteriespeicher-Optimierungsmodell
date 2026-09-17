@@ -1,7 +1,6 @@
-
-streamlit==1.36.0
-pandas==2.2.2
-numpy==1.26.4
-plotly==5.22.0
-matplotlib
+streamlit
+pandas
+numpy
+plotly
 pulp
+matplotlib
