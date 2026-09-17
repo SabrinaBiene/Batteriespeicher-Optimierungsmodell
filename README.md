@@ -153,7 +153,7 @@ source .venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-Hinweis: Für die reine Nutzung der Anwendung sind keine Änderungen am Quellcode erforderlich. Nach der Installation der Abhängigkeiten genügt der Befehl unter 5. um die Anwendung zu starten.
+Hinweis: Für die reine Nutzung der Anwendung sind keine Änderungen am Quellcode erforderlich. Nach der Installation der Abhängigkeiten genügt der Befehl unter 4. um die Anwendung zu starten.
 
 4. Anwendung starten:
 ```bash
