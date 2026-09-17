@@ -125,13 +125,16 @@ git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.gi
 Dadurch wird das Projekt auf den lokalen Rechner heruntergeladen.
 
 2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
+
 Windows: 
 ```bash
 python -m venv .venv
 ```
+
 ```bash
 .venv\Scripts\activate
 ```
+
 Linux / macOS:
 ```bash
 python3 -m venv .venv
