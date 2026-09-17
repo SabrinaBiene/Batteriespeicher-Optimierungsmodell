@@ -1,0 +1,19 @@
+Streamlint Ansicht starten
+App:
+python -m pip install pulp streamlit
+python -m streamlit run App.py
+
+Shortcuts:
+Strg + K, dann Strg + C  → auskommentieren
+Strg + K, dann Strg + U  → Kommentar entfernen
+
+################################# 
+
+
+# generell df mit kumulierten werten erstellen lassen
+
+# Umsetzung NEG Jahresgebunden für Leistung
+
+# Charge (-) and Discharge (+) + SoC in one Diagramm (Netz-Perspektive)
+
+
