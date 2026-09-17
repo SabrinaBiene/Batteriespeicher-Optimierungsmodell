@@ -67,6 +67,6 @@ für strommix.csv:
 Zeitstempel, Biomasse_MWh, Wasserkraft_MWh, Wind_Offshore_MWh, Wind_Onshore_MWh, Photovoltaik_MWh, Sonstige_Erneuerbare_MWh, Kernenergie_MWh, Braunkohle_MWh, Steinkohle_MWh,
 Erdgas_MWh, Pumpspeicher_MWh, Sonstige_MWh
 
-für strompreise.csv:
+für strompreis.csv:
 Zeitstempel, Strompreis
 
