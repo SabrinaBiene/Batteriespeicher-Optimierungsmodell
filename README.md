@@ -68,6 +68,5 @@ Erdgas_MWh, Pumpspeicher_MWh, Sonstige_MWh
 
 Strompreise 
 CSV-Datei mit folgenden Spalten:
-```text
 Zeitstempel, Strompreis
 
