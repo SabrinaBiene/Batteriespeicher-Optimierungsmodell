@@ -6,7 +6,7 @@ Dieses Projekt untersucht das Erlöspotenzial eines Großbatteriespeichers am de
 
 Es kombiniert ein interaktives **Strommarkt-Dashboard** mit einer **Ex-post-Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers (BESS)** am deutschen Day-Ahead-Strommarkt.
 
-Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse für meine BA-Thesis konzipiert.
+Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse konzipiert und im Rahmen einer Bachelorarbeit entwickelt.
 
 ---
 
@@ -70,3 +70,45 @@ Erdgas_MWh, Pumpspeicher_MWh, Sonstige_MWh
 für strompreis.csv:
 Zeitstempel, Strompreis
 
+```
+---
+
+## Projektstruktur | Ordnerstruktur
+```text
+├── App.py 
+├── Battery_Model.py        
+├── Daten_Vorbereitung.py
+├── data/
+  └── strommix.csv
+  └── strompreis.csv
+└── pages/
+  └── 1_Marktdaten.py
+  └── 2_Batteriespeicher.py
+```
+Die Python-Dateien haben dabei folgende Funktion:
+App.py
+      - Dies ist der Einstiegspunkt der Streamlit-Anwendung & baut die Dashboard-Seite auf
+Battery_Model.py
+      - Python-Code der Batteriespeicher-Simulation - hier werden die Ergebnisse für die Seite zum Speicher berechnet
+Daten_Vorbereitung.py
+      - Python-Code der die Daten aufbereitet und die Ergebnisse für die Seite zum Strommarkt liefert
+Die beiden Seiten 1. Marktdaten & 2. Batteriespeicher bündeln alle Ergebnisse und stellen diese auf geeignete Weise dar.
+
+Alle Diagramme, die aufbereiteten Datentabellen sowie die Tabelle der Berechnungsergebnisse der Batterispeicher-Simualtion können heruntergeladen werden:
+Die Datenreihen Strom über App.py, wo man sich ebenfalls eine Vorschau anzeigen lassen kann.
+Die Diagramme haben meist einen Download-Button der sich rechts über dem Diagramm befindet.
+Die Ergebnisse der Batterispeicher Simulation finden sich auf der Seite 2. Batteriespeicher in einem seperat beschrifteten Ordner.
+---
+
+## Installation | Nutzung des Tools
+
+1. Repository klonen:
+```bash
+git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.git
+
+2. Abhängigkeiten installieren:
+pip install -r requirements.txt
+
+3. Anwendung starten:
+streamlit run App.py
+```
