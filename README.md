@@ -7,6 +7,7 @@ Dieses Projekt untersucht das Erlöspotenzial eines Großbatteriespeichers am de
 Es kombiniert ein interaktives **Strommarkt-Dashboard** mit einer **Ex-post-Simulation der arbitragebasierten Vermarktung eines Großbatteriespeichers (BESS)** am deutschen Day-Ahead-Strommarkt.
 
 Die Anwendung wurde mit **Python & Streamlit** umgesetzt und ist für die explorative Datenanalyse für meine BA-Thesis konzipiert.
+
 ---
 
 ## Inhalte & Funktionen
