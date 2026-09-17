@@ -98,12 +98,14 @@ Alle Diagramme, die aufbereiteten Datentabellen sowie die Tabelle der Berechnung
 Die Datenreihen Strom über App.py, wo man sich ebenfalls eine Vorschau anzeigen lassen kann.
 Die Diagramme haben meist einen Download-Button der sich rechts über dem Diagramm befindet.
 Die Ergebnisse der Batterispeicher Simulation finden sich auf der Seite 2. Batteriespeicher in einem seperat beschrifteten Ordner.
+
 ---
+## Nutzung des Tools | Streamlit
+## Nutzung des Tools | Installation
 
-## Installation | Nutzung des Tools
-
-Die Nutzung des Tools benötigt eine lokale Installation von Python: 
-Python (Version 3.10 oder neuer) - Download z.B. über: 
+Für eine lokale Nutzung des Tools wird eine lokale Installation von Python: 
+Python (Version 3.10 oder neuer) 
+- Download z.B. über: 
 ```bash
 https://www.python.org/downloads/
 ```
@@ -113,8 +115,9 @@ Wichtig:
 Während der Installation die Option "Add Python to PATH" aktivieren.
 ```
 
-sowie
-Git - Download z.B. über: 
+- sowie
+Git benötigt.
+- Download z.B. über: 
 ```bash
 https://git-scm.com/install/windows
 ```
@@ -124,13 +127,13 @@ Rechtsklick > Weitere Optionen anzeigen > Open Git Bash Here
 ```
 ein Terminal geöffnet und die nachfolgenden Eingaben durchlaufen werden.
 
-# 1. Repository klonen:
+1. Repository klonen:
 ```bash
 git clone https://github.com/SabrinaBiene/Batteriespeicher-Optimierungsmodell.git
 ```
 Dadurch wird das Projekt auf den lokalen Rechner heruntergeladen.
 
-# 2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
+2. Virtuelle Python-Umgebung erstellen (empfohlen) und aktivieren:
 
 Windows: 
 ```bash
@@ -146,13 +149,13 @@ Linux / macOS:
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-# 3. Abhängigkeiten installieren:
+3. Abhängigkeiten installieren:
 ```bash
 pip install -r requirements.txt
 ```
 Hinweis: Für die reine Nutzung der Anwendung sind keine Änderungen am Quellcode erforderlich. Nach der Installation der Abhängigkeiten genügt der Befehl unter 5. um die Anwendung zu starten.
 
-# 4. Anwendung starten:
+4. Anwendung starten:
 ```bash
 streamlit run App.py
 ```
