@@ -6,6 +6,19 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from plotly.subplots import make_subplots
 
+# Sidebar 
+if (st.session_state.get("run_calc", False)
+    and "start_d" in st.session_state
+    and "end_d" in st.session_state):
+    st.sidebar.divider()
+    # Zeitraum
+    st.sidebar.subheader("Zeitraum")
+    st.sidebar.info(f"{st.session_state.start_d.strftime('%d.%m.%Y')} "
+        f"bis "
+        f"{st.session_state.end_d.strftime('%d.%m.%Y')}"
+    )
+    st.sidebar.divider()
+
 # Daten aus Session State laden
 market = st.session_state.get("market_results")
 if market is None:

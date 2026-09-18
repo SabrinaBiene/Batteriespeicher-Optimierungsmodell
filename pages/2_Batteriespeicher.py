@@ -4,6 +4,25 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import pandas as pd
 
+# Sidebar 
+if (st.session_state.get("run_calc", False)
+    and "start_d" in st.session_state
+    and "end_d" in st.session_state):
+    st.sidebar.divider()
+    # Zeitraum
+    st.sidebar.subheader("Zeitraum")
+    st.sidebar.info(f"{st.session_state.start_d.strftime('%d.%m.%Y')} "
+        f"bis "
+        f"{st.session_state.end_d.strftime('%d.%m.%Y')}"
+    )
+    st.sidebar.divider()
+    # Speicherparameter
+    st.sidebar.subheader("Speicherparameter")
+    st.sidebar.metric("Kapazität", f"{st.session_state['cap_mwh']:.1f} MWh")
+    st.sidebar.metric("Leistung", f"{st.session_state['p_mw']:.1f} MW")
+    st.sidebar.metric("RTE", f"{st.session_state['rte']:.1%}")
+    st.sidebar.divider()
+# Ergebnisse laden
 analysis_results = st.session_state.get("battery_results")
 
 if analysis_results is None:
@@ -31,18 +50,59 @@ COLOURS = {
 # --------------------------
 # Tabs
 # --------------------------
-tab_results, tab_betrieb, tab_cost, tab_dl = st.tabs(["Zusammenfassung", "Speicherbetrieb", "Kostenaufstellung", "Daten-Download"])
+tab_results, tab_betrieb, tab_cost, tab_dl = st.tabs(["Zusammenfassung", "Speicherbetrieb", "Kosten & Erlöse", "Daten-Download"])
 
 with tab_results:
     col_1, col_2, col_3 = st.columns(3, vertical_alignment="center", gap = "large")
     with col_1:
         st.metric("Gesamterlöse", f'{m["total_revenue"]:,.2f} €'.replace(",", "X").replace(".", ",").replace("X", "."))
+        st.metric("Erlöse je MWh", f'{m["revenue_per_mwh"]:,.2f} €/MWh'.replace(",", "X").replace(".", ",").replace("X", "."))
     with col_2:
         st.metric("Gesamtkosten", f'{m["total_cost_full"]:,.2f} €'.replace(",", "X").replace(".", ",").replace("X", "."))
+        st.metric("Kosten je MWh", f'{m["cost_per_mwh"]:,.2f} €/MWh'.replace(",", "X").replace(".", ",").replace("X", "."))
     with col_3:
         st.metric("Gesamtprofit", f'{m["total_profit"]:,.2f} €'.replace(",", "X").replace(".", ",").replace("X", "."))
-
-    st.dataframe(year_stats, use_container_width=True, hide_index=True)
+        st.metric("Profit je MWh", f'{m["profit_per_mwh"]:,.2f} €/MWh'.replace(",", "X").replace(".", ",").replace("X", "."))
+# Ergebnistabelle
+    year_stats_display = year_stats.copy()
+    # Spaltennamen
+    year_stats_display = year_stats_display.rename(columns={
+        "year": "Jahr",
+        "revenue": "Erlöse [€]",
+        "cost_buy": "Einkaufskosten [€]",
+        "cost_var": "Variable Kosten [€]",
+        "cost": "Kosten [€]",
+        "profit": "Profit [€]",
+        "e_in": "Geladen [MWh]",
+        "e_out": "Entladen [MWh]",
+        "cycles_op": "Betriebszyklen",
+        "cycles_efc": "Vollzyklen",
+        "profit_per_op_cycle": "Profit/Betriebszyklus [€]",
+        "profit_per_efc": "Profit/Vollzyklus [€]"
+    })
+    # Deutsches Zahlenformat
+    for col in [
+        "Erlöse [€]",
+        "Einkaufskosten [€]",
+        "Variable Kosten [€]",
+        "Kosten [€]",
+        "Profit [€]",
+        "Profit/Betriebszyklus [€]",
+        "Profit/Vollzyklus [€]"
+        ]:
+        year_stats_display[col] = year_stats_display[col].apply(
+            lambda x: f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        )
+    # Ganzzahlen
+    for col in ["Geladen [MWh]", "Entladen [MWh]", "Betriebszyklen"]:
+        year_stats_display[col] = year_stats_display[col].apply(
+            lambda x: f"{x:,.0f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        )
+    # Vollzyklen
+    year_stats_display["Vollzyklen"] = year_stats_display["Vollzyklen"].apply(
+        lambda x: f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    )
+    st.dataframe(year_stats_display, use_container_width=True, hide_index=True)
 # Jahresergebnisse
     st.subheader("Jahresergebnisse")
     st.markdown("---")
@@ -213,21 +273,8 @@ with tab_results:
     )
 
     st.plotly_chart(fig_soc, use_container_width=True, key="soc_and_p_results")
-with tab_betrieb:
-# Betrieb 
-    st.subheader("Betriebsstunden (aktiv) im Zeitverlauf")
-    fig_op, ax_op = plt.subplots(figsize=(12,4))
-    ax_op.plot(df_operation["timestamp"], df_operation["operating_hours_cum"], color="black")
-    ax_op.set_title("Kumulierte Betriebsstunden")
-    ax_op.set_xlabel("Zeit")
-    ax_op.set_ylabel("Stunden")
-    ax_op.grid(True)
-    ####################################
-#   Overlay Leistung einfügen
-    ####################################
-# Laden und Entladen im Tagesverlauf
-    st.pyplot(fig_op)
 
+    # Laden und Entladen im Tagesverlauf
     fig_hist = go.Figure()
     fig_hist.add_trace(go.Bar(
         x=hour_stats["hour"],
@@ -274,7 +321,7 @@ with tab_betrieb:
         )
     )
     fig_hist.update_layout(
-        title="Lade- und Entladeaktivität im Tagesverlauf",
+        title="Lade- und Entladeaktivität im Tagesverlauf - mit Preis-Overlay",
         template="plotly_white",
         height=500,
         barmode="group",
@@ -286,9 +333,45 @@ with tab_betrieb:
                     showgrid=False),
         legend=dict(orientation="h", y=1.1)
     )
+    st.plotly_chart(fig_hist, use_container_width=True, key="daily_charging_price-overlay")
+
+with tab_betrieb:
+# Betrieb 
+    st.subheader("Betriebsstunden (aktiv) im Zeitverlauf")
+    fig_op, ax_op = plt.subplots(figsize=(12,4))
+    ax_op.plot(df_operation["timestamp"], df_operation["operating_hours_cum"], color="black")
+    ax_op.set_title("Kumulierte Betriebsstunden")
+    ax_op.set_xlabel("Zeit")
+    ax_op.set_ylabel("Stunden")
+    ax_op.grid(True)
+    st.pyplot(fig_op)
+
+# Laden und Entladen im Tagesverlauf
+    fig_hist = go.Figure()
+    fig_hist.add_trace(go.Bar(
+        x=hour_stats["hour"],
+        y=hour_stats["charge_norm"],
+        name="Laden",
+        marker_color="#85BCF5"
+    ))
+    fig_hist.add_trace(go.Bar(
+        x=hour_stats["hour"],
+        y=hour_stats["discharge_norm"],
+        name="Entladen",
+        marker_color="#FFD700"
+    ))
+
+    fig_hist.update_layout(
+        title="Lade- und Entladeaktivität im Tagesverlauf",
+        template="plotly_white",
+        height=500,
+        barmode="group",
+        xaxis_title="Stunde des Tages",
+        yaxis=dict(title="Normierte Aktivität"),
+         legend=dict(orientation="h", y=1.1)
+    )
     st.plotly_chart(fig_hist, use_container_width=True, key="daily_charging")
 
-    #################################################### overlay Preisspanne (Q90-10 Quantile einfügen)
 # Heatmap Laden | Entladen
     col_1, col_2 = st.columns(2)
     with col_1:
@@ -339,7 +422,6 @@ with tab_betrieb:
         },
         title="Laden gegen Strompreis"
     )
-
     fig_charge_price.update_traces(
         marker=dict(
             color=COLOURS["charge"],
@@ -375,7 +457,6 @@ with tab_betrieb:
     best_month = month_stats.loc[
         month_stats["profit"].idxmax(),
         "month"]
-
     df_plot = df_results[df_results["month"] == best_month].copy()
     fig_soc2 = go.Figure()
     # Entladen positiv
@@ -427,7 +508,6 @@ with tab_betrieb:
         hovermode="x unified",
         legend=dict(orientation="h", y=1.05)
     )
-
     st.plotly_chart(fig_soc2, use_container_width=True, key="soc_and_p_stat")
 
 # Heatmap SoC
@@ -452,7 +532,6 @@ with tab_betrieb:
     st.markdown("---")
     show_price = st.checkbox("Strompreis einblenden", key="show_price")
     show_ee = st.checkbox("EE-Anteil einblenden",key="show_ee")
-
     # Laden 
     fig = px.bar(
         month_stats,
@@ -515,9 +594,7 @@ with tab_betrieb:
                 side="right"
             )
         )
-
     st.plotly_chart(fig, use_container_width=True, key="overlay_charge_price")
-
 # Zyklen
     st.markdown("---")
     fig = go.Figure()
@@ -526,7 +603,6 @@ with tab_betrieb:
         y=month_stats["cycles_efc"],
         name="Vollzyklen (EFC)",
         marker_color="rgba(40,137,228,0.65)")
-  
     fig.add_bar(
         x=month_stats["month"],
         y=month_stats["cycles_op"],
@@ -564,13 +640,7 @@ with tab_betrieb:
 with tab_cost:
 # Monatl. Kostenentwicklung
     st.markdown("## Kostenaufstellung")
-    # später statt mit metrics mit KPIs: 
-    # with col_1:st.markdown(f"""
-#        <div style="text-align:center;">
-#            <h4>Strombezugskosten</h4>
-#            <h2>{m["cost_buy_pos"]:,.0f} €</h2>
-#        </div>
-#        """, unsafe_allow_html=True)
+
     col_1 , col_2, col_3 = st.columns(3)
     with col_1: 
         st.metric("Strombezugskosten", f'{m["cost_buy_pos"]:,.2f} €'.replace(",", "X").replace(".", ",").replace("X", "."))
@@ -636,6 +706,28 @@ with tab_cost:
     )
     st.plotly_chart(fig_month, use_container_width=True, key="profit_m")
 
+# Jahresergebnisse
+    st.subheader("Jahresergebnisse")
+    st.markdown("---")
+    fig_year = px.bar(
+        year_stats,
+        x="year",
+        y=["revenue", "cost", "profit"],
+        barmode="group",
+        title="Jährliche Erlöse, Kosten und Gewinne",
+        labels={
+            "value": "Betrag [€]",
+            "year": "Jahr"
+        },
+        color_discrete_map={
+            "revenue": COLOURS["revenue"],
+            "cost": COLOURS["cost"],
+            "profit": COLOURS["profit"]
+        }
+    )
+    st.plotly_chart(fig_year, use_container_width=True,key="yearly_results")
+
+    
 with tab_dl: 
     st.write("Download")
 # Ergebnisstabelle

@@ -57,21 +57,19 @@ with tab_overview:
         uploaded_prices = st.file_uploader(
                 "Strompreis-CSV hochladen",
                 type=["csv"])
-        if uploaded_prices is None:
-            st.warning("Bitte Strompreis-Datei hochladen.")
-            st.stop()
-        df_prices_custom_raw = read_csv(uploaded_prices)
-        df_prices_custom = validate_and_prepare_prices(df_prices_custom_raw)
         # Mix
         st.info("mit Spalten 'Zeitstempel' und 'Quelle_Mwh', wobei Quelle bspw. Steinkohle, Wind_Offshore, etc.")
         uploaded_mix = st.file_uploader(
                 "Strommix-CSV hochladen",
                 type=["csv"])
-        if uploaded_mix is None:
-            st.warning("Bitte Strommix-Datei hochladen.")
+        if uploaded_mix is None or uploaded_prices is None:
+            st.warning("Bitte beide Dateien hochladen.")
             st.stop()
+        df_prices_custom_raw = read_csv(uploaded_prices)
+        df_prices_custom = validate_and_prepare_prices(df_prices_custom_raw)
         df_mix_custom_raw = read_csv(uploaded_mix)
         df_mix_custom = validate_and_prepare_mix(df_mix_custom_raw)
+        df_mix_custom = add_ee_share(df_mix_custom)
 
     # einen Dataframe erzeugen
     if data_source == "Hinterlegte Daten":
@@ -190,6 +188,15 @@ with tab_overview:
         if df_data is not None:
             with st.expander("Datenvorschau"):
                 st.dataframe(df_data.head())     
+
+            csv_download_raw = df_data.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label="Rohdaten herunterladen",
+                data=csv_download_raw,
+                file_name="Rohdaten_Strommarkt.csv",
+                mime="text/csv"
+            )
+            
         if st.button("↩ Reset"):
             st.session_state.start_d = min_day
             st.session_state.end_d = max_day
@@ -199,8 +206,24 @@ with tab_overview:
             st.rerun()
 
     st.divider()
-    if st.button("Berechnung starten", ):
+    if st.button("Berechnung starten"):
         st.session_state.run_calc = True
+
+    if st.session_state.get("run_calc", False):
+        st.sidebar.divider()
+        # Zeitraum
+        st.sidebar.subheader("Zeitraum")
+        st.sidebar.info(f"{st.session_state.start_d.strftime('%d.%m.%Y')} "
+            f"bis "
+            f"{st.session_state.end_d.strftime('%d.%m.%Y')}"
+        )
+        st.sidebar.divider()
+        # Speicherparameter
+        st.sidebar.subheader("Speicherparameter")
+        st.sidebar.metric("Kapazität", f"{st.session_state['cap_mwh']:.1f} MWh")
+        st.sidebar.metric("Leistung", f"{st.session_state['p_mw']:.1f} MW")
+        st.sidebar.metric("RTE", f"{st.session_state['rte']:.1%}")
+        st.sidebar.divider()
     st.divider()
 
 # =============================

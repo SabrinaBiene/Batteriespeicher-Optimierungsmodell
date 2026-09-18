@@ -363,7 +363,19 @@ def build_analysis_frames(df_results: pd.DataFrame, cap_mwh: float) -> Dict[str,
     if total_charge_energy > 0
     else 0.0
     )
+    total_e_in = df_analysis["e_in"].sum()
+    total_e_out = df_analysis["e_out"].sum()
+    revenue_per_mwh = (total_revenue / total_e_out
+        if total_e_out > 0 else 0)
+    cost_per_mwh = (total_cost_full / total_e_in
+        if total_e_in > 0 else 0)
 
+    profit_per_mwh = (total_profit / total_e_out
+        if total_e_out > 0 else 0)
+    operating_hours = len(df_operation)
+    total_cycles_op = df_analysis["cycle_start"].sum()
+    total_cycles_efc = ((total_e_in + total_e_out)/ (2 * cap_mwh)
+        if cap_mwh > 0 else 0)
     metrics = {
         "n_days": n_days,
         "total_revenue": total_revenue,
@@ -377,7 +389,13 @@ def build_analysis_frames(df_results: pd.DataFrame, cap_mwh: float) -> Dict[str,
         "cost_var": cost_var,     
         "avg_price_per_mwh_buy": avg_price_per_mwh_buy,
         "avg_total_purchase_cost_per_mwh": avg_total_purchase_cost_per_mwh,
-        "yearly_activity_metrics": yearly_activity_metrics
+        "yearly_activity_metrics": yearly_activity_metrics,
+        "revenue_per_mwh": revenue_per_mwh,
+        "cost_per_mwh": cost_per_mwh,
+        "profit_per_mwh": profit_per_mwh,
+        "operating_hours": operating_hours,
+        "total_cycles_op": total_cycles_op,
+        "total_cycles_efc": total_cycles_efc,
     }
     return {
         "df_analysis": df_analysis,
