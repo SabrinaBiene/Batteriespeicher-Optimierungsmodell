@@ -725,7 +725,7 @@ with tab_cost:
             "profit": COLOURS["profit"]
         }
     )
-    st.plotly_chart(fig_year, use_container_width=True,key="yearly_results")
+    st.plotly_chart(fig_year, use_container_width=True,key="yearly_results_cashflow")
 
     
 with tab_dl: 
